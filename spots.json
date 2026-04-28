@@ -1,0 +1,72 @@
+[
+  {
+    "id": "s1",
+    "name": "Sherman Island",
+    "lat": 38.0453,
+    "lng": -121.7957,
+    "region": "Bay Area",
+    "description": "Strong Delta winds, consistent",
+    "approved": true,
+    "createdBy": "system"
+  },
+  {
+    "id": "s2",
+    "name": "Crissy Field",
+    "lat": 37.8037,
+    "lng": -122.4668,
+    "region": "Bay Area",
+    "description": "Afternoon sea breeze, bay chop",
+    "approved": true,
+    "createdBy": "system"
+  },
+  {
+    "id": "s3",
+    "name": "Waddell Creek",
+    "lat": 37.0953,
+    "lng": -122.2819,
+    "region": "Bay Area",
+    "description": "Ocean spot, NW swell",
+    "approved": true,
+    "createdBy": "system"
+  },
+  {
+    "id": "s4",
+    "name": "3rd Avenue Beach",
+    "lat": 37.5785,
+    "lng": -122.3892,
+    "region": "Bay Area",
+    "description": "Flat water, beginner friendly",
+    "approved": true,
+    "createdBy": "system"
+  },
+  {
+    "id": "s5",
+    "name": "Alameda Beach",
+    "lat": 37.7652,
+    "lng": -122.2789,
+    "region": "Bay Area",
+    "description": "Calm bay, sheltered",
+    "approved": true,
+    "createdBy": "system"
+  },
+  {
+    "id": "s6",
+    "name": "Bodega Bay",
+    "lat": 38.3327,
+    "lng": -123.0472,
+    "region": "Northern CA",
+    "description": "Exposed coast, strong NW winds",
+    "approved": true,
+    "createdBy": "system"
+  },
+  {
+    "id": "s7",
+    "name": "Coyote Point",
+    "lat": 37.5933,
+    "lng": -122.3172,
+    "region": "Bay Area",
+    "description": "South bay, afternoon winds",
+    "approved": true,
+    "createdBy": "system"
+  }
+]
