@@ -2,8 +2,8 @@
   {
     "id": "s1",
     "name": "Sherman Island",
-    "lat": 38.0453,
-    "lng": -121.7957,
+    "lat": 38.0591,
+    "lng": -121.7926,
     "region": "Bay Area",
     "description": "Strong Delta winds, consistent",
     "approved": true,
@@ -32,8 +32,8 @@
   {
     "id": "s4",
     "name": "3rd Avenue Beach",
-    "lat": 37.5785,
-    "lng": -122.3892,
+    "lat": 37.5763,
+    "lng": -122.2802,
     "region": "Bay Area",
     "description": "Flat water, beginner friendly",
     "approved": true,

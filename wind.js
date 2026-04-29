@@ -12,7 +12,8 @@ async function getWindForSpot(spot) {
     `&daily=windspeed_10m_max,windspeed_10m_min,winddirection_10m_dominant` +
     `&wind_speed_unit=kn` +
     `&timezone=America%2FLos_Angeles` +
-    `&forecast_days=1`;
+    `&forecast_days=1` +
+    `&models=icon_seamless`;
 
   const response = await axios.get(url);
   const json = response.data;
