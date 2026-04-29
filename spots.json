@@ -68,5 +68,25 @@
     "description": "South bay, afternoon winds",
     "approved": true,
     "createdBy": "system"
+  },
+  {
+    "id": "s8",
+    "name": "Albany Beach",
+    "lat": 37.8878,
+    "lng": -122.3171,
+    "region": "Bay Area",
+    "description": "Albany / Berkeley, afternoon winds",
+    "approved": true,
+    "createdBy": "system"
+  },
+  {
+    "id": "s9",
+    "name": "Berkeley Marina",
+    "lat": 37.8878,
+    "lng": -122.3171,
+    "region": "Bay Area",
+    "description": "Wingers and wind surfers only, afternoon winds",
+    "approved": true,
+    "createdBy": "system"
   }
 ]
