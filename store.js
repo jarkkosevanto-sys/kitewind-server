@@ -58,4 +58,21 @@ function getAllUsers() {
   return Object.entries(db.users).map(([id, data]) => ({ id, ...data }));
 }
 
-module.exports = { getAllSpots, addSpot, registerUser, getAllUsers };
+function getLastNotified(userId) {
+  const db = readDB();
+  return db.users[userId]?.lastNotified || { spotIds: [], time: null };
+}
+
+function setLastNotified(userId, spotIds) {
+  const db = readDB();
+  if (db.users[userId]) {
+    db.users[userId].lastNotified = {
+      spotIds,
+      time: new Date().toISOString(),
+    };
+    writeDB(db);
+  }
+}
+
+module.exports = { getAllSpots, addSpot, registerUser, getAllUsers, getLastNotified, setLastNotified };
+

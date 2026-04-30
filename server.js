@@ -4,7 +4,7 @@ const cors = require('cors');
 const cron = require('node-cron');
 const { getWindForSpot } = require('./wind');
 const { sendWindAlert } = require('./notifications');
-const { getAllSpots, addSpot, registerUser, getAllUsers } = require('./store');
+const { getAllSpots, addSpot, registerUser, getAllUsers, getLastNotified, setLastNotified } = require('./store');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -89,13 +89,26 @@ async function checkWindAndNotify() {
       .filter(Boolean);
 
     const goodSpots = userSpots.filter(w => w.currentSpeed >= user.threshold);
+    const goodSpotIds = goodSpots.map(s => s.spotId).sort();
 
-    if (goodSpots.length > 0) {
-      console.log(`Notifying user ${user.id}: ${goodSpots.map(s => `${s.spotName} ${s.currentSpeed}kt`).join(', ')}`);
-      await sendWindAlert([user.pushToken], goodSpots, user.threshold);
+    // get what we notified last time
+    const lastNotified = getLastNotified(user.id);
+    const lastSpotIds = [...(lastNotified.spotIds || [])].sort();
+
+    // find NEW spots that weren't on last hour
+    const newSpots = goodSpots.filter(s => !lastNotified.spotIds.includes(s.spotId));
+
+    if (newSpots.length > 0) {
+      console.log(`New spots for user ${user.id}: ${newSpots.map(s => `${s.spotName} ${s.currentSpeed}kt`).join(', ')}`);
+      await sendWindAlert([user.pushToken], newSpots, user.threshold);
+    } else if (goodSpots.length > 0) {
+      console.log(`User ${user.id}: same spots still on, skipping notification`);
     } else {
       console.log(`User ${user.id}: no spots above ${user.threshold}kt threshold`);
     }
+
+    // always update last notified state
+    setLastNotified(user.id, goodSpotIds);
   }
 }
 
