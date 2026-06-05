@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cron = require('node-cron');
+const axios = require('axios');
 const { getWindForSpot } = require('./wind');
 const { sendWindAlert } = require('./notifications');
 const { getAllSpots, addSpot, registerUser, getAllUsers, getLastNotified, setLastNotified } = require('./store');
