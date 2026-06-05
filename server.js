@@ -124,6 +124,62 @@ cron.schedule('0 7 * * *', () => {
   checkWindAndNotify().catch(console.error);
 });
 
+app.get('/compare', async (req, res) => {
+  const { lat, lng } = req.query;
+  if (!lat || !lng) return res.status(400).json({ error: 'lat and lng required' });
+
+  const results = {};
+
+  try {
+    const iconUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=windspeed_10m&wind_speed_unit=kn&timezone=America%2FLos_Angeles&forecast_days=1&models=icon_seamless`;
+    const iconData = await axios.get(iconUrl);
+    const now = new Date().getHours();
+    const times = iconData.data.hourly.time;
+    const idx = times.findIndex(t => parseInt(t.slice(11,13)) === now);
+    results.icon = Math.round(iconData.data.hourly.windspeed_10m[idx]);
+  } catch(e) { results.icon = null; }
+
+  try {
+    const gfsUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=windspeed_10m&wind_speed_unit=kn&timezone=America%2FLos_Angeles&forecast_days=1`;
+    const gfsData = await axios.get(gfsUrl);
+    const now = new Date().getHours();
+    const times = gfsData.data.hourly.time;
+    const idx = times.findIndex(t => parseInt(t.slice(11,13)) === now);
+    results.gfs = Math.round(gfsData.data.hourly.windspeed_10m[idx]);
+  } catch(e) { results.gfs = null; }
+
+  try {
+    const ecmwfUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=windspeed_10m&wind_speed_unit=kn&timezone=America%2FLos_Angeles&forecast_days=1&models=ecmwf_ifs025`;
+    const ecmwfData = await axios.get(ecmwfUrl);
+    const now = new Date().getHours();
+    const times = ecmwfData.data.hourly.time;
+    const idx = times.findIndex(t => parseInt(t.slice(11,13)) === now);
+    results.ecmwf = Math.round(ecmwfData.data.hourly.windspeed_10m[idx]);
+  } catch(e) { results.ecmwf = null; }
+
+  try {
+    const ndbcId = req.query.ndbc;
+    if (ndbcId) {
+      const ndbcData = await axios.get(`https://www.ndbc.noaa.gov/data/realtime2/${ndbcId}.txt`);
+      const lines = ndbcData.data.trim().split('\n');
+      const parts = lines[2].split(/\s+/);
+      const wspd = parts[6];
+      results.ndbc = wspd !== 'MM' ? Math.round(parseFloat(wspd) * 1.944) : null;
+    }
+  } catch(e) { results.ndbc = null; }
+
+  try {
+    const nwsId = req.query.nws;
+    if (nwsId) {
+      const nwsData = await axios.get(`https://api.weather.gov/stations/${nwsId}/observations/latest`);
+      const ws = nwsData.data.properties?.windSpeed?.value;
+      results.nws = ws != null ? Math.round(ws * 0.5396) : null;
+    }
+  } catch(e) { results.nws = null; }
+
+  res.json(results);
+});
+
 app.listen(PORT, () => {
   console.log(`KiteWind server running on port ${PORT}`);
   console.log('Cron: hourly wind check + 7am morning check scheduled');
