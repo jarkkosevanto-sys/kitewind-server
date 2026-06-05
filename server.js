@@ -137,7 +137,7 @@ app.get('/compare', async (req, res) => {
     const times = iconData.data.hourly.time;
     const idx = times.findIndex(t => parseInt(t.slice(11,13)) === now);
     results.icon = Math.round(iconData.data.hourly.windspeed_10m[idx]);
-  } catch(e) { results.icon = null; }
+  } catch(e) { results.icon = e.message; }
 
   try {
     const gfsUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=windspeed_10m&wind_speed_unit=kn&timezone=America%2FLos_Angeles&forecast_days=1`;
@@ -146,7 +146,7 @@ app.get('/compare', async (req, res) => {
     const times = gfsData.data.hourly.time;
     const idx = times.findIndex(t => parseInt(t.slice(11,13)) === now);
     results.gfs = Math.round(gfsData.data.hourly.windspeed_10m[idx]);
-  } catch(e) { results.gfs = null; }
+  } catch(e) { results.gfs = e.message; }
 
   try {
     const ecmwfUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=windspeed_10m&wind_speed_unit=kn&timezone=America%2FLos_Angeles&forecast_days=1&models=ecmwf_ifs025`;
@@ -155,7 +155,7 @@ app.get('/compare', async (req, res) => {
     const times = ecmwfData.data.hourly.time;
     const idx = times.findIndex(t => parseInt(t.slice(11,13)) === now);
     results.ecmwf = Math.round(ecmwfData.data.hourly.windspeed_10m[idx]);
-  } catch(e) { results.ecmwf = null; }
+  } catch(e) { results.ecmwf = e.message; }
 
   try {
     const ndbcId = req.query.ndbc;
@@ -166,7 +166,7 @@ app.get('/compare', async (req, res) => {
       const wspd = parts[6];
       results.ndbc = wspd !== 'MM' ? Math.round(parseFloat(wspd) * 1.944) : null;
     }
-  } catch(e) { results.ndbc = null; }
+  } catch(e) { results.ndbc = e.message; }
 
   try {
     const nwsId = req.query.nws;
@@ -175,7 +175,7 @@ app.get('/compare', async (req, res) => {
       const ws = nwsData.data.properties?.windSpeed?.value;
       results.nws = ws != null ? Math.round(ws * 0.5396) : null;
     }
-  } catch(e) { results.nws = null; }
+  } catch(e) { results.nws = e.message; }
 
   res.json(results);
 });
