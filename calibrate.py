@@ -34,7 +34,7 @@ coyote_diff = round(inland_temp - coyote_temp, 1)
 
 # write header if file doesn't exist
 write_header = not os.path.exists(LOG_FILE)
-with open(LOG_FILE, 'a', newline='') as f:
+with open(LOG_FILE, 'a', newline='\n') as f:
     writer = csv.writer(f)
     if write_header:
         writer.writerow([
